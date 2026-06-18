@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Яндекс Такси</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="brand-mark">Я</div>
+        <div>
+          <div class="brand-title">Яндекс</div>
+          <div class="brand-subtitle">Такси</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="home.html" class="btn btn-secondary">Главная</a>
+        <button class="btn btn-secondary" id="openBooking">Заказать</button>
+        <a href="profile.html" class="btn btn-primary">Профиль</a>
+      </nav>
+    </header>
+
+    <main class="app-main">
+      <section class="booking-panel">
+        <div class="booking-card">
+          <div class="booking-header">
+            <div>
+              <div class="step-label">Заказ такси</div>
+              <h1>Поехали?</h1>
+            </div>
+            <span class="badge">3 машины рядом</span>
+          </div>
+
+          <p class="booking-text">Укажи адреса, выбери класс машины и время подачи. Мы покажем цену и маршрут.</p>
+
+          <div class="input-grid">
+            <label>Откуда
+              <input type="text" id="fromInput" placeholder="Москва, Тверская ул., 7" />
+            </label>
+            <label>Куда
+              <input type="text" id="toInput" placeholder="Москва, Арбат, 12" />
+            </label>
+            <label>Когда
+              <input type="datetime-local" id="rideTime" />
+            </label>
+            <label>Телефон
+              <input type="tel" id="phoneInput" placeholder="+7 999 123-45-67" />
+            </label>
+          </div>
+
+          <div class="service-tabs" id="serviceTabs">
+            <button type="button" class="service-btn selected" data-class="econom">Эконом</button>
+            <button type="button" class="service-btn" data-class="comfort">Комфорт</button>
+            <button type="button" class="service-btn" data-class="business">Бизнес</button>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <span>Примерная стоимость</span>
+              <strong id="priceTag">0 ₽</strong>
+            </div>
+            <div class="info-card">
+              <span>В пути</span>
+              <strong id="timeTag">0 мин</strong>
+            </div>
+            <div class="info-card">
+              <span>Ожидание</span>
+              <strong id="etaTag">5 мин</strong>
+            </div>
+          </div>
+
+          <div class="payment-row">
+            <span class="payment-title">Оплата</span>
+            <div class="payment-options">
+              <label><input type="radio" name="globalPaymentMethod" value="card" checked /> Картой</label>
+              <label><input type="radio" name="globalPaymentMethod" value="cash" /> Наличными</label>
+            </div>
+          </div>
+
+          <div class="route-preview">
+            <div class="route-label">Маршрут</div>
+            <div id="routePreview">Укажите адреса</div>
+          </div>
+
+          <button class="btn btn-primary" id="orderNow">Оформить заказ</button>
+          <p class="footnote">Оплата безопасна. Водитель не увидит данные карты.</p>
+        </div>
+      </section>
+
+      <section class="map-panel">
+        <div class="map-card">
+          <div class="map-status">
+            <div><span id="availableCars">3</span> машины рядом</div>
+            <div>Приезд менее <strong id="realEta">6 мин</strong></div>
+          </div>
+          <div class="map-actions">
+            <button class="btn btn-secondary" id="locateMe">Найти меня</button>
+          </div>
+          <div class="map-placeholder" id="map"></div>
+          <div class="map-footer">
+            <div>
+              <span id="distanceTag">0 км</span>
+              <small>расстояние</small>
+            </div>
+            <div>
+              <span id="travelTimeTag">0 мин</span>
+              <small>поездка</small>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section class="order-card hidden" id="orderCard">
+      <div class="order-card__header">
+        <h2>Последний заказ</h2>
+        <span class="status-pill" id="lastOrderStatus">Ожидает подтверждения</span>
+      </div>
+      <div class="order-grid">
+        <div>Номер заказа</div>
+        <div><strong id="lastOrderId">—</strong></div>
+        <div>Маршрут</div>
+        <div id="lastOrderRoute">—</div>
+        <div>Класс</div>
+        <div id="lastOrderClass">—</div>
+        <div>Стоимость</div>
+        <div><strong id="lastOrderPrice">0 ₽</strong></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal hidden" id="paymentModal" aria-hidden="true">
+    <div class="modal__backdrop" id="paymentBackdrop"></div>
+    <div class="modal__panel">
+      <button class="modal__close" id="closePayment">×</button>
+      <h2>Подтверждение оплаты</h2>
+      <div class="payment-summary">
+        <p>Маршрут: <span id="summaryRoute">—</span></p>
+        <p>Класс: <span id="summaryClass">—</span></p>
+        <p>Стоимость: <strong id="summaryPrice">0 ₽</strong></p>
+        <p>Оплата: <strong id="summaryPaymentMethod">—</strong></p>
+      </div>
+      <form id="paymentForm" class="form">
+        <div id="cardFields">
+          <label>Имя владельца карты
+            <input type="text" id="cardName" placeholder="Иван Иванов" />
+          </label>
+          <label>Номер карты
+            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" />
+          </label>
+          <div class="row">
+            <label>Срок действия
+              <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" />
+            </label>
+            <label>CVC / CVV
+              <input type="password" id="cardCvv" placeholder="123" maxlength="4" />
+            </label>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit" id="paymentSubmit">Подтвердить</button>
+      </form>
+      <div class="payment-result hidden" id="paymentResult"></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="confirmationModal" aria-hidden="true">
+    <div class="modal__backdrop" id="confirmationBackdrop"></div>
+    <div class="modal__panel">
+      <button class="modal__close" id="closeConfirmation">×</button>
+      <h2>Заказ подтвержден</h2>
+      <p class="confirmation-text">Водитель уже едет. Проверяй детали заказа.</p>
+      <div class="confirmation-details">
+        <p>Номер заказа: <strong id="confirmationOrderId">—</strong></p>
+        <p>Маршрут: <span id="confirmationRoute">—</span></p>
+        <p>Время подачи: <span id="confirmationTime">—</span></p>
+        <p>Класс: <span id="confirmationClass">—</span></p>
+        <p>Оплата: <span id="confirmationPaymentMethod">—</span></p>
+        <p>Стоимость: <strong id="confirmationPrice">0 ₽</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

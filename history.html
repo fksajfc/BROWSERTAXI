@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>История - Яндекс Такси</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="brand-mark">Я</div>
+        <div>
+          <div class="brand-title">Яндекс</div>
+          <div class="brand-subtitle">Такси</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="home.html" class="btn btn-secondary">Главная</a>
+        <a href="index.html" class="btn btn-secondary">Заказать</a>
+        <a href="profile.html" class="btn btn-secondary">Профиль</a>
+        <a href="history.html" class="btn btn-primary">История</a>
+      </nav>
+    </header>
+
+    <main class="app-main history-main">
+      <section class="history-page-section">
+        <div class="history-page-header">
+          <h1>История поездок</h1>
+          <p class="history-page-subtitle">Все ваши заказы и оплаты в одном месте</p>
+        </div>
+
+        <div class="history-filter-tabs">
+          <button class="history-filter-tab selected" data-filter="all">Все</button>
+          <button class="history-filter-tab" data-filter="orders">Заказы</button>
+          <button class="history-filter-tab" data-filter="payments">Оплаты</button>
+          <button class="history-filter-tab" data-filter="completed">Завершённые</button>
+          <button class="history-filter-tab" data-filter="pending">В обработке</button>
+        </div>
+
+        <div class="history-summary">
+          <div class="summary-card">
+            <span class="summary-icon">🚗</span>
+            <div class="summary-info">
+              <span class="summary-label">Всего поездок</span>
+              <span class="summary-value" id="totalOrders">0</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">💳</span>
+            <div class="summary-info">
+              <span class="summary-label">Всего оплат</span>
+              <span class="summary-value" id="totalPayments">0</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">💰</span>
+            <div class="summary-info">
+              <span class="summary-label">Общая сумма</span>
+              <span class="summary-value" id="totalAmount">0 ₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-timeline" id="historyTimeline">
+          <!-- История будет загружена здесь -->
+        </div>
+
+        <div class="history-empty hidden" id="historyEmpty">
+          <div class="empty-illustration">📭</div>
+          <h3>История пуста</h3>
+          <p>У вас пока нет заказов. Закажите первую поездку!</p>
+          <a href="index.html" class="btn btn-primary">Заказать такси</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>&copy; 2024 Яндекс Такси. Все права защищены.</p>
+    </footer>
+  </div>
+
+  <div class="modal hidden" id="orderDetailsModal" aria-hidden="true">
+    <div class="modal__backdrop" id="detailsBackdrop"></div>
+    <div class="modal__panel modal__panel--large">
+      <button class="modal__close" id="closeDetails">×</button>
+      <h2 id="detailsTitle">Детали заказа</h2>
+      <div class="details-content" id="detailsContent">
+        <!-- Детали будут загружены здесь -->
+      </div>
+    </div>
+  </div>
+
+  <script src="history.js"></script>
+</body>
+</html>

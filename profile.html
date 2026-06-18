@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Профиль - Яндекс Такси</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="brand-mark">Я</div>
+        <div>
+          <div class="brand-title">Яндекс</div>
+          <div class="brand-subtitle">Такси</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="home.html" class="btn btn-secondary">Главная</a>
+        <a href="index.html" class="btn btn-secondary">Заказать</a>
+        <a href="profile.html" class="btn btn-primary">Профиль</a>
+      </nav>
+    </header>
+
+    <main class="app-main profile-main">
+      <section class="profile-section">
+        <div class="profile-card-full">
+          <h2>Личные данные</h2>
+          <div class="input-grid">
+            <label>Имя
+              <input type="text" id="profileName" placeholder="Иван Иванов" />
+            </label>
+            <label>Email
+              <input type="email" id="profileEmail" placeholder="ivan@mail.ru" />
+            </label>
+            <label>Телефон
+              <input type="tel" id="profilePhone" placeholder="+7 999 123-45-67" />
+            </label>
+          </div>
+          <button class="btn btn-primary" id="saveProfile">Сохранить профиль</button>
+        </div>
+      </section>
+
+      <section class="history-section">
+        <div class="history-tabs">
+          <button class="history-tab selected" data-tab="orders">Заказы</button>
+          <button class="history-tab" data-tab="payments">Оплаты</button>
+        </div>
+
+        <div class="history-content" id="ordersTab">
+          <h3>История заказов</h3>
+          <div class="history-list" id="orderHistoryList">
+            <p class="empty-message">Нет заказов</p>
+          </div>
+        </div>
+
+        <div class="history-content hidden" id="paymentsTab">
+          <h3>История оплат</h3>
+          <div class="history-list" id="paymentHistoryList">
+            <p class="empty-message">Нет оплат</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>&copy; 2024 Яндекс Такси. Все права защищены.</p>
+    </footer>
+  </div>
+
+  <script src="profile.js"></script>
+</body>
+</html>
